@@ -1,0 +1,112 @@
+/dts-v1/;
+/plugin/;
+
+#include <dt-bindings/pinctrl/bcm2835.h>
+
+/ {
+	compatible = "brcm,bcm2835", "brcm,bcm2708", "brcm,bcm2709";
+
+	fragment@0 {
+		target-path = "/";
+		__overlay__ {
+			bridge: bridge {
+				compatible = "raspberrypi,dpidac";
+				#address-cells = <1>;
+				#size-cells = <0>;
+
+				display-timings {
+					native-mode = <&t_240p60>;
+
+					t_1920p60: t_1920p60 {
+						clock-frequency = <38400000>;
+						hactive = <1920>;
+						hfront-porch = <52>;
+						hsync-len = <208>;
+						hsync-active = <0>;
+						hback-porch = <260>;
+						vactive = <240>;
+						vfront-porch = <1>;
+						vsync-len = <3>;
+						vsync-active = <0>;
+						vback-porch = <22>;
+					};
+					
+					t_240p60: t_240p60 {
+						clock-frequency = <6400000>;
+						hactive = <320>;
+						hfront-porch = <17>;
+						hsync-len = <30>;
+						hsync-active = <0>;
+						hback-porch = <34>;
+						vactive = <240>;
+						vfront-porch = <1>;
+						vsync-len = <3>;
+						vsync-active = <0>;
+						vback-porch = <22>;
+					};
+					
+					t_224p60: t_224p60 {
+						clock-frequency = <6400000>;
+						hactive = <320>;
+						hfront-porch = <15>;
+						hsync-len = <29>;
+						hsync-active = <0>;
+						hback-porch = <40>;
+						vactive = <224>;
+						vfront-porch = <14>;
+						vsync-len = <16>;
+						vsync-active = <0>;
+						vback-porch = <16>;
+					};
+				};
+
+				ports {
+					#address-cells = <1>;
+					#size-cells = <0>;
+
+					port@0 {
+						reg = <0>;
+
+						vga_bridge_in: endpoint {
+							remote-endpoint = <&dpi_out>;
+						};
+					};
+
+					port@1 {
+						reg = <1>;
+
+						vga_bridge_out: endpoint {
+							remote-endpoint = <&vga_con_in>;
+						};
+					};
+				};
+			};
+
+			vga {
+				compatible = "vga-connector";
+
+				port {
+					vga_con_in: endpoint {
+						remote-endpoint = <&vga_bridge_out>;
+					};
+				};
+			};
+		};
+	};
+
+	fragment@1 {
+		target = <&dpi>;
+		__overlay__  {
+			status = "okay";
+
+			pinctrl-names = "default";
+			pinctrl-0 = <&dpi_18bit_gpio0>;
+
+			port {
+				dpi_out: endpoint@0 {
+					remote-endpoint = <&vga_bridge_in>;
+				};
+			};
+		};
+	};
+};
