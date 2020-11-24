@@ -17,20 +17,6 @@
 				display-timings {
 					native-mode = <&t_240p60>;
 
-					t_1920p60: t_1920p60 {
-						clock-frequency = <38400000>;
-						hactive = <1920>;
-						hfront-porch = <52>;
-						hsync-len = <208>;
-						hsync-active = <0>;
-						hback-porch = <260>;
-						vactive = <240>;
-						vfront-porch = <1>;
-						vsync-len = <3>;
-						vsync-active = <0>;
-						vback-porch = <22>;
-					};
-					
 					t_240p60: t_240p60 {
 						clock-frequency = <6400000>;
 						hactive = <320>;
@@ -45,18 +31,33 @@
 						vback-porch = <22>;
 					};
 					
-					t_224p60: t_224p60 {
-						clock-frequency = <6400000>;
-						hactive = <320>;
-						hfront-porch = <15>;
-						hsync-len = <29>;
+					t_480i60: t_480i60 {
+						clock-frequency = <12800000>;
+						interlaced;
+						hactive = <640>;
+						hfront-porch = <30>;
+						hsync-len = <60>;
 						hsync-active = <0>;
-						hback-porch = <40>;
-						vactive = <224>;
-						vfront-porch = <14>;
-						vsync-len = <16>;
+						hback-porch = <72>;
+						vactive = <480>;
+						vfront-porch = <22>;
+						vsync-len = <5>;
 						vsync-active = <0>;
-						vback-porch = <16>;
+						vback-porch = <24>;
+					};
+					
+					t_vga: t_vga {
+						clock-frequency = <25180000>;
+						hactive = <640>;
+						hfront-porch = <16>;
+						hsync-len = <96>;
+						hsync-active = <0>;
+						hback-porch = <48>;
+						vactive = <480>;
+						vfront-porch = <10>;
+						vsync-len = <2>;
+						vsync-active = <0>;
+						vback-porch = <33>;
 					};
 				};
 
