@@ -46,9 +46,9 @@ static struct drm_display_mode *dpidac_display_mode_from_timings(struct drm_conn
         }
 
         // setup flags
-        vm.flags = interlace ? DRM_MODE_FLAG_INTERLACE : 0;
-        vm.flags |= hsync ? DRM_MODE_FLAG_NHSYNC : DRM_MODE_FLAG_PHSYNC;
-        vm.flags |= vsync ? DRM_MODE_FLAG_NVSYNC : DRM_MODE_FLAG_PVSYNC;
+        vm.flags = interlace ? DISPLAY_FLAGS_INTERLACED : 0;
+        vm.flags |= hsync ? DISPLAY_FLAGS_HSYNC_LOW : DISPLAY_FLAGS_HSYNC_HIGH;
+        vm.flags |= vsync ? DISPLAY_FLAGS_VSYNC_LOW : DISPLAY_FLAGS_VSYNC_HIGH;
 
         // create/init display mode, convert from video mode
         mode = drm_mode_create(connector->dev);
@@ -57,7 +57,10 @@ static struct drm_display_mode *dpidac_display_mode_from_timings(struct drm_conn
             return NULL;
         }
 
-        // aspect ratio
+        drm_display_mode_from_videomode(&vm, mode);
+
+        // TODO: aspect ratio ?
+        /*
         switch (ratio) {
             case 1:
                 mode->flags |= DRM_MODE_FLAG_PIC_AR_4_3;
@@ -72,8 +75,7 @@ static struct drm_display_mode *dpidac_display_mode_from_timings(struct drm_conn
                 mode->flags |= DRM_MODE_FLAG_PIC_AR_NONE;
                 break;
         }
-
-        drm_display_mode_from_videomode(&vm, mode);
+        */
 
         return mode;
     }
