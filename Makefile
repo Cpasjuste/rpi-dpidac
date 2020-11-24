@@ -1,8 +1,5 @@
 ifneq (${KERNELRELEASE},)
-  obj-m := rpi-dpidac.o
-  dtbo-y := vc4-vga666.dtbo
-  targets := $(dtbo-y)
-  always  := $(dtbo-y)
+	obj-m += rpi-dpidac.o
 else
 	KERNELDIR        ?= /lib/modules/$(shell uname -r)/build
 	MODULE_DIR       ?= $(shell pwd)
@@ -11,17 +8,15 @@ else
 	INSTALL_MOD_PATH ?= /
 endif
 
-all: modules dtbs
+all: modules
 
 modules:
-	$(MAKE) ARCH="$(ARCH)" CROSS_COMPILE="$(CROSS_COMPILE)" -C $(KERNELDIR) SUBDIRS="$(MODULE_DIR)"  modules
-	$(MAKE) ARCH="$(ARCH)" CROSS_COMPILE="$(CROSS_COMPILE)" -C $(KERNELDIR) SUBDIRS="$(MODULE_DIR)"  dtbs
+	${MAKE} ARCH="${ARCH}" CROSS_COMPILE="${CROSS_COMPILE}" -C ${KERNELDIR} SUBDIRS="${MODULE_DIR}"  modules
 
 modules_install:
-	$(MAKE) ARCH="$(ARCH)" CROSS_COMPILE="$(CROSS_COMPILE)" INSTALL_MOD_PATH="$(INSTALL_MOD_PATH)" -C $(KERNELDIR) SUBDIRS="$(MODULE_DIR)"  modules_install
+	${MAKE} ARCH="${ARCH}" CROSS_COMPILE="${CROSS_COMPILE}" INSTALL_MOD_PATH="${INSTALL_MOD_PATH}" -C ${KERNELDIR} SUBDIRS="${MODULE_DIR}"  modules_install
 
 clean:
 	rm -f *.o *.ko *.mod.c .*.o .*.ko .*.mod.c .*.cmd *~
 	rm -f Module.symvers Module.markers modules.order
 	rm -rf .tmp_versions
-
