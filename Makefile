@@ -15,12 +15,10 @@ all: modules dtbs
 
 modules:
 	$(MAKE) ARCH="$(ARCH)" CROSS_COMPILE="$(CROSS_COMPILE)" -C $(KERNELDIR) SUBDIRS="$(MODULE_DIR)"  modules
+	$(MAKE) ARCH="$(ARCH)" CROSS_COMPILE="$(CROSS_COMPILE)" -C $(KERNELDIR) SUBDIRS="$(MODULE_DIR)"  dtbs
 
 modules_install:
 	$(MAKE) ARCH="$(ARCH)" CROSS_COMPILE="$(CROSS_COMPILE)" INSTALL_MOD_PATH="$(INSTALL_MOD_PATH)" -C $(KERNELDIR) SUBDIRS="$(MODULE_DIR)"  modules_install
-
-dtbs:
-	$(MAKE) ARCH="$(ARCH)" CROSS_COMPILE="$(CROSS_COMPILE)" -C $(KERNELDIR) SUBDIRS="$(MODULE_DIR)"  dtbs
 
 clean:
 	rm -f *.o *.ko *.mod.c .*.o .*.ko .*.mod.c .*.cmd *~
