@@ -1,6 +1,8 @@
 ifneq (${KERNELRELEASE},)
   obj-m := rpi-dpidac.o
-  dtbo-y := vc4-vga666-overlay.dtb
+  dtbo-y := vc4-vga666.dtbo
+  targets := $(dtbo-y)
+  always  := $(dtbo-y)
 else
 	KERNELDIR        ?= /lib/modules/$(shell uname -r)/build
 	MODULE_DIR       ?= $(shell pwd)
