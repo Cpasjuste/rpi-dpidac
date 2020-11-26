@@ -1,0 +1,8 @@
+obj-m := rpi-dpidac.o
+
+all:
+	make ARCH="${ARCH}" CROSS_COMPILE="${CROSS_COMPILE}" -C ${KERNELDIR} M=$(PWD) modules
+
+clean:
+	make ARCH="${ARCH}" CROSS_COMPILE="${CROSS_COMPILE}" -C ${KERNELDIR} M=$(PWD) clean
+
