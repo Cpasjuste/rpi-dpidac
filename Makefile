@@ -17,6 +17,6 @@ modules_install:
 	${MAKE} ARCH="${ARCH}" CROSS_COMPILE="${CROSS_COMPILE}" INSTALL_MOD_PATH="${INSTALL_MOD_PATH}" -C ${KERNELDIR} SUBDIRS="${MODULE_DIR}"  modules_install
 
 clean:
-	rm -f *.o *.ko *.mod.c .*.o .*.ko .*.mod.c .*.cmd *~
+	rm -f *.o *.ko *.mod.c .*.o .*.ko .*.mod.c *.mod .*.cmd *~
 	rm -f Module.symvers Module.markers modules.order
 	rm -rf .tmp_versions
