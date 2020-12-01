@@ -59,24 +59,6 @@ static struct drm_display_mode *dpidac_display_mode_from_timings(struct drm_conn
 
         drm_display_mode_from_videomode(&vm, mode);
 
-        // TODO: aspect ratio ?
-        /*
-        switch (ratio) {
-            case 1:
-                mode->flags |= DRM_MODE_FLAG_PIC_AR_4_3;
-                break;
-            case 3:
-                mode->flags |= DRM_MODE_FLAG_PIC_AR_16_9;
-                break;
-            case 8:
-                mode->flags |= DRM_MODE_FLAG_PIC_AR_64_27;
-                break;
-            default:
-                mode->flags |= DRM_MODE_FLAG_PIC_AR_NONE;
-                break;
-        }
-        */
-
         return mode;
     }
 
@@ -116,7 +98,7 @@ int dpidac_load_timings(struct drm_connector *connector) {
                 line[line_len - 1] = '\0';
                 if ((mode = dpidac_display_mode_from_timings(connector, line)) != NULL) {
                     mode->type = mode_count ? DRM_MODE_TYPE_DRIVER : DRM_MODE_TYPE_DRIVER | DRM_MODE_TYPE_PREFERRED;
-                    printk(KERN_INFO "[RPI-DPIDAC]: \t" DRM_MODE_FMT, DRM_MODE_ARG(mode));
+                    //printk(KERN_INFO "[RPI-DPIDAC]: \t" DRM_MODE_FMT, DRM_MODE_ARG(mode));
                     drm_mode_probed_add(connector, mode);
                     mode_count++;
                 }
@@ -152,7 +134,7 @@ static int dpidac_get_modes(struct drm_connector *connector) {
 
     i = dpidac_load_timings(connector);
     if (i) {
-        printk(KERN_INFO "[RPI-DPIDAC]: dpidac_get_modes: %i custom modes loaded\n", i);
+        //printk(KERN_INFO "[RPI-DPIDAC]: dpidac_get_modes: %i custom modes loaded\n", i);
         return i;
     } else if (timings) {
         for (i = 0; i < timings->num_timings; i++) {
@@ -172,13 +154,13 @@ static int dpidac_get_modes(struct drm_connector *connector) {
             drm_mode_set_name(mode);
             drm_mode_probed_add(connector, mode);
         }
-        printk(KERN_INFO "[RPI-DPIDAC]: dpidac_get_modes: %i modes loaded from dtb overlay\n", i);
+        //printk(KERN_INFO "[RPI-DPIDAC]: dpidac_get_modes: %i modes loaded from dtb overlay\n", i);
     } else {
         /* Since there is no timing data, use XGA standard modes */
         i = drm_add_modes_noedid(connector, 1920, 1200);
         /* And prefer a mode pretty much anyone can handle */
         drm_set_preferred_mode(connector, 1024, 768);
-        printk(KERN_INFO "[RPI-DPIDAC]: dpidac_get_modes: fallback to XGA mode...\n");
+        //printk(KERN_INFO "[RPI-DPIDAC]: dpidac_get_modes: fallback to XGA mode...\n");
     }
 
     return i;
