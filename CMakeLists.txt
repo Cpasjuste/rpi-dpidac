@@ -11,7 +11,6 @@ set(CMAKE_C_STANDARD_REQUIRED ON)
 
 # Module info
 add_definitions(-D__KERNEL__ -DMODULE)
-#-D__GENKSYMS__ -nostdinc
 
 # Find the kernel release
 execute_process(

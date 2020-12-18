@@ -223,6 +223,7 @@ static const struct drm_bridge_funcs dpidac_bridge_funcs = {
 
 static int dpidac_probe(struct platform_device *pdev) {
     struct dpidac *vga;
+    const char *mode;
 
     vga = devm_kzalloc(&pdev->dev, sizeof(*vga), GFP_KERNEL);
     if (!vga)
@@ -231,6 +232,9 @@ static int dpidac_probe(struct platform_device *pdev) {
 
     vga->timings = of_get_display_timings(pdev->dev.of_node);
     DRM_DEBUG("display-timings from DT: %p\n", vga->timings);
+
+    mode = of_get_property(pdev->dev.of_node, "mode", NULL);
+    printk(KERN_INFO "[RPI-DPIDAC]: mode: %s\n", mode);
 
     vga->bridge.funcs = &dpidac_bridge_funcs;
     vga->bridge.of_node = pdev->dev.of_node;

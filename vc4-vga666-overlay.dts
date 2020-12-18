@@ -99,15 +99,59 @@
 		target = <&dpi>;
 		__overlay__  {
 			status = "okay";
-
-			pinctrl-names = "default";
-			pinctrl-0 = <&dpi_18bit_gpio0>;
-
 			port {
 				dpi_out: endpoint@0 {
 					remote-endpoint = <&vga_bridge_in>;
 				};
 			};
 		};
+	};
+
+	fragment@2 {
+		target = <&dpi>;
+		__overlay__  {
+			status = "okay";
+			pinctrl-names = "default";
+			pinctrl-0 = <&vga666_pins>;
+		};
+	};
+
+	fragment@3 {
+		target = <&gpio>;
+		__overlay__ {
+			vga666_pins: vga666_pins {
+				brcm,pins = <2 3 4 5 6 7 8 9 10 11 12
+					     13 14 15 16 17 18 19 20 21>;
+				brcm,function = <6>;
+				brcm,pull = <0>;
+			};
+		};
+	};
+
+	fragment@4 {
+		target = <&dpi>;
+		__dormant__  {
+		    mode = "6";
+			status = "okay";
+			pinctrl-names = "default";
+			pinctrl-0 = <&vga666_mode6_pins>;
+		};
+	};
+
+	fragment@5 {
+		target = <&gpio>;
+		__dormant__ {
+			vga666_mode6_pins: vga666_mode6_pins {
+				brcm,pins = <2 3 4 5 6 7 8 9 12 13 14
+						 15 16 17 20 21 22 23 24 25>;
+				brcm,function = <6>;
+				brcm,pull = <0>;
+			};
+		};
+	};
+
+	__overrides__ {
+		mode5 = <0>,"+0+1+2+3-4-5";
+		mode6 = <0>,"+0+1-2-3+4+5";
 	};
 };
