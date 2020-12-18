@@ -14,6 +14,8 @@
 				#address-cells = <1>;
 				#size-cells = <0>;
 
+                vga666-mode = <5>;
+
 				display-timings {
 					native-mode = <&t_240p60>;
 
@@ -131,7 +133,6 @@
 	fragment@4 {
 		target = <&dpi>;
 		__dormant__  {
-		    mode = "6";
 			status = "okay";
 			pinctrl-names = "default";
 			pinctrl-0 = <&vga666_mode6_pins>;
@@ -152,6 +153,6 @@
 
 	__overrides__ {
 		mode5 = <0>,"+0+1+2+3-4-5";
-		mode6 = <0>,"+0+1-2-3+4+5";
+		mode6 = <&bridge>,"vga666-mode:6";
 	};
 };

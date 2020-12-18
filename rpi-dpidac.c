@@ -186,6 +186,7 @@ static const struct drm_connector_funcs dpidac_con_funcs = {
 static int dpidac_attach(struct drm_bridge *bridge) {
     struct dpidac *vga = drm_bridge_to_dpidac(bridge);
     u32 bus_format = MEDIA_BUS_FMT_RGB666_1X18;
+    u32 mode;
     int ret;
 
     if (!bridge->encoder) {
@@ -201,6 +202,11 @@ static int dpidac_attach(struct drm_bridge *bridge) {
         DRM_ERROR("Failed to initialize connector\n");
         return ret;
     }
+    
+    of_property_read_u32(vga->bridge.of_node, "vga666-mode", &mode);
+    //fwnode_property_read_u32(dev_fwnode(&pdev->dev), "vga666-mode", &mode);
+    printk(KERN_INFO "[RPI-DPIDAC]: vga666-mode: %i\n", mode);
+
     ret = drm_display_info_set_bus_formats(&vga->connector.display_info,
                                            &bus_format, 1);
     if (ret) {
@@ -223,7 +229,7 @@ static const struct drm_bridge_funcs dpidac_bridge_funcs = {
 
 static int dpidac_probe(struct platform_device *pdev) {
     struct dpidac *vga;
-    const char *mode;
+    u32 mode;
 
     vga = devm_kzalloc(&pdev->dev, sizeof(*vga), GFP_KERNEL);
     if (!vga)
@@ -231,10 +237,11 @@ static int dpidac_probe(struct platform_device *pdev) {
     platform_set_drvdata(pdev, vga);
 
     vga->timings = of_get_display_timings(pdev->dev.of_node);
-    DRM_DEBUG("display-timings from DT: %p\n", vga->timings);
+    printk(KERN_INFO "[RPI-DPIDAC]: display-timings from DT: %p\n", vga->timings);
 
-    mode = of_get_property(pdev->dev.of_node, "mode", NULL);
-    printk(KERN_INFO "[RPI-DPIDAC]: mode: %s\n", mode);
+    of_property_read_u32(pdev->dev.of_node, "vga666-mode", &mode);
+    //fwnode_property_read_u32(dev_fwnode(&pdev->dev), "vga666-mode", &mode);
+    printk(KERN_INFO "[RPI-DPIDAC]: vga666-mode: %i\n", mode);
 
     vga->bridge.funcs = &dpidac_bridge_funcs;
     vga->bridge.of_node = pdev->dev.of_node;
