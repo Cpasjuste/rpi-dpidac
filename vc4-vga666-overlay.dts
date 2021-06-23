@@ -14,6 +14,8 @@
 				#address-cells = <1>;
 				#size-cells = <0>;
 
+				vc4-vga666-mode = <5>;
+
 				display-timings {
 					native-mode = <&t_240p60>;
 
@@ -149,8 +151,15 @@
 		};
 	};
 
+    fragment@6 {
+		target = <&bridge>;
+		__dormant__ {
+			vc4-vga666-mode = <6>;
+		};
+	};
+
 	__overrides__ {
-		mode5 = <0>,"+0+1+2+3-4-5";
-		mode6 = <0>,"+0+1-2-3+4+5";
+		mode5 = <0>,"+0+1+2+3-4-5-6";
+		mode6 = <0>,"+0+1-2-3+4+5+6";
 	};
 };
