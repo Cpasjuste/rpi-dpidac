@@ -189,6 +189,7 @@ static const struct drm_connector_funcs dpidac_con_funcs = {
 
 static int dpidac_attach(struct drm_bridge *bridge, enum drm_bridge_attach_flags flags) {
     struct dpidac *vga = drm_bridge_to_dpidac(bridge);
+    // TODO: if mode6=true -> bus_format = MEDIA_BUS_FMT_RGB666_1X24_CPADHI
     u32 bus_format = MEDIA_BUS_FMT_RGB666_1X18;
     u32 mode;
     int ret;
@@ -207,9 +208,11 @@ static int dpidac_attach(struct drm_bridge *bridge, enum drm_bridge_attach_flags
         return ret;
     }
     
-    of_property_read_u32(vga->bridge.of_node, "vga666-mode", &mode);
+    //of_property_read_u32(vga->bridge.of_node, "vga666-mode", &mode);
     //fwnode_property_read_u32(dev_fwnode(&pdev->dev), "vga666-mode", &mode);
-    printk(KERN_INFO "[RPI-DPIDAC]: vga666-mode: %i\n", mode);
+    //printk(KERN_INFO "[RPI-DPIDAC]: dpidac_attach: vga666 mode: %i\n", mode);
+    //const char *mode6 = of_get_property(vga->bridge.of_node, "mode6", NULL);
+    //printk(KERN_INFO "[RPI-DPIDAC]: dpidac_attach: vga666 mode6: %p\n", mode6);
 
     ret = drm_display_info_set_bus_formats(&vga->connector.display_info,
                                            &bus_format, 1);
@@ -243,9 +246,21 @@ static int dpidac_probe(struct platform_device *pdev) {
     vga->timings = of_get_display_timings(pdev->dev.of_node);
     printk(KERN_INFO "[RPI-DPIDAC]: display-timings from DT: %p\n", vga->timings);
 
-    of_property_read_u32(pdev->dev.of_node, "vga666-mode", &mode);
+    //of_property_read_u32(pdev->dev.of_node, "mode5", &mode);
     //fwnode_property_read_u32(dev_fwnode(&pdev->dev), "vga666-mode", &mode);
-    printk(KERN_INFO "[RPI-DPIDAC]: vga666-mode: %i\n", mode);
+    //printk(KERN_INFO "[RPI-DPIDAC]: dpidac_probe: vga666 mode5: %i\n", mode);
+
+    //of_property_read_u32(pdev->dev.of_node, "mode6", &mode);
+    //fwnode_property_read_u32(dev_fwnode(&pdev->dev), "vga666-mode", &mode);
+    //printk(KERN_INFO "[RPI-DPIDAC]: dpidac_probe: vga666 mode6: %i\n", mode);
+
+    void *mode5 = of_get_property(pdev->dev.of_node, "mode5", NULL);
+    printk(KERN_INFO "[RPI-DPIDAC]: dpidac_probe: vga666 mode5: %p\n", mode5);
+    void *mode6 = of_get_property(pdev->dev.of_node, "mode6", NULL);
+    printk(KERN_INFO "[RPI-DPIDAC]: dpidac_probe: vga666 mode6: %p\n", mode6);
+
+    //bool mode6 = of_property_read_bool(pdev->dev.of_node, "mode6");
+    //printk(KERN_INFO "[RPI-DPIDAC]: dpidac_probe: vga666 mode6: %i\n", mode6);
 
     vga->bridge.funcs = &dpidac_bridge_funcs;
     vga->bridge.of_node = pdev->dev.of_node;

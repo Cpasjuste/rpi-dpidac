@@ -14,8 +14,6 @@
 				#address-cells = <1>;
 				#size-cells = <0>;
 
-                vga666-mode = <5>;
-
 				display-timings {
 					native-mode = <&t_240p60>;
 
@@ -153,6 +151,6 @@
 
 	__overrides__ {
 		mode5 = <0>,"+0+1+2+3-4-5";
-		mode6 = <&bridge>,"vga666-mode:6";
+		mode6 = <0>,"+0+1-2-3+4+5";
 	};
 };
