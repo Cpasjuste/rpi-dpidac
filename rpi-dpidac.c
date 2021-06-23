@@ -15,10 +15,14 @@
 #include <video/of_display_timing.h>
 #include <video/videomode.h>
 
-#include <drm/drmP.h>
+#include <linux/platform_device.h>
+
 #include <drm/drm_atomic_helper.h>
+#include <drm/drm_bridge.h>
 #include <drm/drm_crtc.h>
 #include <drm/drm_crtc_helper.h>
+#include <drm/drm_mipi_dsi.h>
+#include <drm/drm_print.h>
 #include <drm/drm_probe_helper.h>
 
 // ~ 20 timings line + comments
@@ -183,7 +187,7 @@ static const struct drm_connector_funcs dpidac_con_funcs = {
         .atomic_destroy_state    = drm_atomic_helper_connector_destroy_state,
 };
 
-static int dpidac_attach(struct drm_bridge *bridge) {
+static int dpidac_attach(struct drm_bridge *bridge, enum drm_bridge_attach_flags flags) {
     struct dpidac *vga = drm_bridge_to_dpidac(bridge);
     u32 bus_format = MEDIA_BUS_FMT_RGB666_1X18;
     u32 mode;
